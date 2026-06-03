@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — STACKLY</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ── Page Hero ── */
+.page-hero { height:55vh; min-height:420px; position:relative; display:flex; align-items:center; padding:0 6%; }
+.page-hero-bg { position:absolute; inset:0; }
+.page-hero-bg img { width:100%; height:100%; object-fit:cover; }
+.hero-overlay { position:absolute; inset:0; background:linear-gradient(to right, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.8) 40%, rgba(8,8,8,0.95) 100%); }
+.hero-inner { position:relative; z-index:2; width:100%; display:flex; align-items:center; justify-content:space-between; gap:40px; }
+.hero-title-col { flex:0 0 auto; }
+.hero-meta-col { flex:0 0 auto; max-width:400px; text-align:left; }
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:16px; }
+.breadcrumb a { color:var(--gold); text-decoration:none; }
+.hero-title-col h1 { font-family:var(--font-display); font-size:clamp(2.8rem,5.5vw,5rem); font-weight:800; line-height:1.05; }
+.hero-title-col h1 em { color:var(--gold); font-style:italic; }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:1px; color:var(--gold); margin-bottom:20px; }
+.hero-badge-dot { width:7px; height:7px; background:var(--gold); border-radius:50%; animation:pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+.hero-sub { color:rgba(255,255,255,0.75); font-size:0.92rem; line-height:1.75; margin-bottom:24px; }
+.hero-actions { display:flex; gap:14px; flex-wrap:wrap; }
+.hero-title-line { display:block; overflow:hidden; }
+.hero-title-inner { display:block; transform:translateY(110%); }
+@media(max-width:768px){ .hero-inner{flex-direction:column;align-items:flex-start;gap:16px;} .hero-meta-col{max-width:100%;} }
+
+/* ── Intro split ── */
+.services-intro { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+.services-intro-img { border-radius:16px; overflow:hidden; height:480px; }
+.services-intro-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.7s; }
+.services-intro:hover .services-intro-img img { transform:scale(1.05); }
+
+/* ── Services Grid ── */
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:56px; }
+.service-card {
+  background:var(--dark2); border:1px solid var(--border);
+  border-radius:14px; padding:34px 26px;
+  transition:var(--transition); position:relative; overflow:hidden;
+  opacity:0; transform:translateY(30px);
+}
+.service-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--gold),var(--gold-dark)); transform:scaleX(0); transform-origin:left; transition:transform 0.4s; }
+.service-card:hover::after { transform:scaleX(1); }
+.service-card:hover { transform:translateY(-8px); border-color:var(--gold); box-shadow:var(--shadow-gold); }
+.service-num { font-family:var(--font-condensed); font-size:3.2rem; font-weight:800; color:rgba(201,168,76,0.1); line-height:1; margin-bottom:14px; }
+.service-icon { font-size:34px; margin-bottom:14px; transition:transform 0.3s; }
+.service-card:hover .service-icon { transform:scale(1.15) rotate(-5deg); }
+.service-card h3 { font-family:var(--font-display); font-size:1.2rem; margin-bottom:10px; }
+.service-card p { color:var(--gray); font-size:0.88rem; line-height:1.75; margin-bottom:18px; }
+.service-link { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:6px; transition:gap 0.3s; }
+.service-card:hover .service-link { gap:10px; }
+
+/* ── Process ── */
+.process-section { background:var(--dark2); padding:110px 6%; }
+.process-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; position:relative; }
+.process-steps::before { content:''; position:absolute; top:32px; left:12.5%; right:12.5%; height:1px; background:linear-gradient(90deg,var(--gold),var(--gold-dark),var(--gold)); }
+.process-step { text-align:center; padding:0 18px; opacity:0; transform:translateY(20px); }
+.step-num { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-dark)); color:var(--black); font-family:var(--font-condensed); font-size:1.3rem; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 22px; position:relative; z-index:1; box-shadow:0 8px 22px rgba(201,168,76,0.3); transition:var(--transition); }
+.process-step:hover .step-num { transform:scale(1.15); box-shadow:0 14px 32px rgba(201,168,76,0.5); }
+.process-step h3 { font-family:var(--font-display); font-size:1.05rem; margin-bottom:8px; }
+.process-step p { color:var(--gray); font-size:0.84rem; line-height:1.7; }
+
+/* ── Add-ons ── */
+.addons-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:56px; }
+.addon-card {
+  background:var(--dark2); border:1px solid var(--border); border-radius:12px;
+  padding:22px 18px; text-align:center; transition:var(--transition); cursor:pointer;
+  opacity:0; transform:translateY(20px); position:relative;
+}
+.addon-card:hover, .addon-card.selected { border-color:var(--gold); background:rgba(201,168,76,0.05); transform:translateY(-5px); }
+.addon-icon { font-size:30px; margin-bottom:10px; }
+.addon-card h4 { font-size:0.88rem; font-weight:600; margin-bottom:4px; }
+.addon-card p { font-size:0.78rem; color:var(--gray); margin-bottom:12px; }
+.addon-price { font-family:var(--font-display); font-size:1.1rem; color:var(--gold); }
+.addon-check { display:none; position:absolute; top:10px; right:10px; width:18px; height:18px; border-radius:50%; background:var(--gold); color:var(--black); font-size:10px; font-weight:700; align-items:center; justify-content:center; }
+.addon-card.selected .addon-check { display:flex; }
+
+/* ── Pricing ── */
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:56px; }
+.pricing-card {
+  background:var(--dark2); border:1px solid var(--border);
+  border-radius:16px; padding:38px 30px;
+  transition:var(--transition); position:relative; overflow:hidden;
+  opacity:0; transform:translateY(30px);
+}
+.pricing-card.featured { border-color:var(--gold); background:linear-gradient(145deg,#161616,#1a1408); }
+.pricing-card.featured::before { content:'Most Popular'; position:absolute; top:18px; right:18px; background:var(--gold); color:var(--black); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:4px 10px; border-radius:20px; }
+.pricing-card:hover { transform:translateY(-8px); box-shadow:var(--shadow-gold); }
+.pricing-card h3 { font-family:var(--font-condensed); font-size:0.95rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+.pricing-price { font-family:var(--font-display); font-size:3.2rem; font-weight:700; margin-bottom:5px; }
+.pricing-price small { font-size:0.95rem; font-weight:400; font-family:var(--font-body); color:var(--gray); }
+.pricing-desc { color:var(--gray); font-size:0.84rem; margin-bottom:24px; line-height:1.65; }
+.pricing-features { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; list-style:none; }
+.pricing-features li { display:flex; align-items:center; gap:9px; font-size:0.88rem; color:rgba(255,255,255,0.8); }
+.pricing-features li::before { content:'✓'; color:var(--gold); font-weight:700; flex-shrink:0; }
+.pricing-features li.no::before { content:'✗'; color:var(--gray); }
+.pricing-features li.no { color:var(--gray); }
+
+/* ── Guarantee ── */
+.guarantee-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:56px; }
+.guarantee-card {
+  display:flex; align-items:flex-start; gap:16px;
+  background:var(--dark2); border:1px solid var(--border); border-radius:12px; padding:24px;
+  opacity:0; transform:translateY(20px); transition:var(--transition);
+}
+.guarantee-card:hover { border-color:var(--gold); }
+.guar-icon { font-size:28px; flex-shrink:0; margin-top:2px; }
+.guar-text h4 { font-family:var(--font-display); font-size:0.95rem; margin-bottom:5px; }
+.guar-text p { font-size:0.82rem; color:var(--gray); line-height:1.65; }
+
+@media(max-width:1024px){ .services-grid{grid-template-columns:1fr 1fr;} .process-steps{grid-template-columns:1fr 1fr;} .process-steps::before{display:none;} .addons-grid{grid-template-columns:1fr 1fr;} .pricing-grid{grid-template-columns:1fr;max-width:460px;margin-left:auto;margin-right:auto;} .services-intro{grid-template-columns:1fr;} .guarantee-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:640px){ .services-grid{grid-template-columns:1fr;} .guarantee-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="mobile-menu" id="mobileMenu">
+  <span class="mobile-close" id="menuClose">✕</span>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="about.html" class="nav-link">About</a>
+  <a href="cars.html" class="nav-link">Fleet</a>
+  <a href="services.html" class="nav-link">Services</a>
+  <a href="blog.html" class="nav-link active">Blog</a>
+  <a href="contact.html" class="nav-link">Contact</a>
+  <a href="login.html" class="nav-cta">Login</a>
+</div>
+
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon"><img src="./WhatsApp Image 2026-06-01 at 11.49.20 PM.jpeg" alt="STACKLY Logo"></div>
+    STACKLY
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="about.html" class="nav-link">About</a></li>
+    <li><a href="cars.html" class="nav-link">Fleet</a></li>
+    <li><a href="services.html" class="nav-link">Services</a></li>
+    <li><a href="blog.html" class="nav-link active">Blog</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+    <li><a href="login.html" class="nav-cta">Login</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-hero" id="pageHero" style="margin-top:var(--nav-h)">
+  <div class="page-hero-bg"><img id="heroBgImg" src="https://images.unsplash.com/photo-1550355291-bbee04a92027?w=1400&q=80" alt="Blog"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <!-- LEFT: Title only -->
+    <div class="hero-title-col">
+      <h1>
+        <span class="hero-title-line"><span class="hero-title-inner" id="ht1">Our </span></span>
+        <span class="hero-title-line"><span class="hero-title-inner" id="ht2"><em>Blog</em></span></span>
+      </h1>
+    </div>
+    <!-- RIGHT: Breadcrumb, badge, sub, button -->
+    <div class="hero-meta-col">
+      <!-- <div class="breadcrumb" id="breadcrumb"><a href="index.html">Home</a><span>/</span> <a href="blog.html">Blog</a></div> -->
+      <div class="hero-badge"><div class="hero-badge-dot"></div> 14 Years of Excellence</div>
+      <p class="hero-sub" id="heroSub">Experience unmatched luxury on the road. Choose from our handpicked fleet of exotic, premium and business cars — delivered to your door.</p>
+      <div class="hero-actions" id="heroActions">
+        <a href="./contact.html" class="btn btn-outline">Contact Us <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Intro -->
+<section class="section">
+  <div class="services-intro">
+    <div class="reveal-left">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title gsap-title">Beyond <em>Car Hire</em></h2>
+      <div class="gold-line"></div>
+      <p class="section-desc" style="max-width:100%;margin-bottom:20px">We provide end-to-end premium mobility solutions — from short city hops to month-long executive charters, every service tailored to your exact requirements.</p>
+      <p class="section-desc" style="max-width:100%;margin-bottom:28px">Our mobility specialists are available around the clock to craft the perfect rental experience — any vehicle, any destination, any request.</p>
+      <a href="contact.html" class="btn btn-gold">Request a Quote <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="services-intro-img reveal-right">
+      <img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=800&q=80" alt="Service">
+    </div>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="section" style="background:var(--dark2);padding-top:80px;padding-bottom:80px">
+  <div class="section-label reveal">Service Catalogue</div>
+  <h2 class="section-title gsap-title">Everything <em>You Need</em></h2>
+  <div class="gold-line reveal"></div>
+  <div class="services-grid">
+    <div class="service-card"><div class="service-num">01</div><div class="service-icon">🚗</div><h3>Daily &amp; Weekend Rental</h3><p>Flexible daily rentals with no mileage caps. Perfect for business trips, special occasions or exploring in style.</p><div class="service-link">Learn More →</div></div>
+    <div class="service-card"><div class="service-num">02</div><div class="service-icon">👔</div><h3>Corporate &amp; Executive</h3><p>Dedicated account managers, priority fleet access and monthly invoicing for business clients and corporate travel.</p><div class="service-link">Learn More →</div></div>
+    <div class="service-card"><div class="service-num">03</div><div class="service-icon">✈️</div><h3>Airport Transfers</h3><p>Seamless meet-and-greet at all major airports. Your vehicle waiting — cleaned, fueled and ready when you land.</p><div class="service-link">Learn More →</div></div>
+    <div class="service-card"><div class="service-num">04</div><div class="service-icon">💒</div><h3>Wedding &amp; Events</h3><p>Make your special day unforgettable. Choose from our bridal collection of Rolls-Royce, Bentley and Phantom models.</p><div class="service-link">Learn More →</div></div>
+    <div class="service-card"><div class="service-num">05</div><div class="service-icon">🎬</div><h3>Film &amp; Photo Shoots</h3><p>Supplying premium vehicles to production studios, fashion brands and content creators — with full logistics support.</p><div class="service-link">Learn More →</div></div>
+    <div class="service-card"><div class="service-num">06</div><div class="service-icon">🌍</div><h3>Long-Term Leasing</h3><p>Monthly and multi-month plans with flexibility to swap vehicles. All inclusive of insurance, servicing and roadside cover.</p><div class="service-link">Learn More →</div></div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="process-section">
+  <div class="text-center">
+    <div class="section-label reveal" style="justify-content:center">How It Works</div>
+    <h2 class="section-title gsap-title" style="color:var(--white)">Book in <em>4 Easy Steps</em></h2>
+    <div class="gold-line reveal"></div>
+  </div>
+  <div class="process-steps" id="processSteps">
+    <div class="process-step"><div class="step-num">01</div><h3>Choose Your Car</h3><p>Browse our curated fleet and select the perfect vehicle for your needs and budget.</p></div>
+    <div class="process-step"><div class="step-num">02</div><h3>Pick Dates &amp; Location</h3><p>Choose pickup and return dates, select from 35 locations or opt for door delivery.</p></div>
+    <div class="process-step"><div class="step-num">03</div><h3>Add Extras</h3><p>Enhance with insurance upgrades, GPS, child seats or private chauffeur service.</p></div>
+    <div class="process-step"><div class="step-num">04</div><h3>Confirm &amp; Drive</h3><p>Instant confirmation to your phone. Arrive and drive — it's that simple.</p></div>
+  </div>
+</section>
+
+<!-- Add-ons -->
+<section class="section">
+  <div class="text-center">
+    <div class="section-label reveal" style="justify-content:center">Optional Extras</div>
+    <h2 class="section-title gsap-title">Personalise <em>Your Rental</em></h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-desc reveal">Click to select any add-ons you'd like — we'll confirm everything when you book.</p>
+  </div>
+  <div class="addons-grid">
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">🛡️</div><h4>Premium Insurance</h4><p>Zero excess, full cover</p><div class="addon-price">+$25/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">📡</div><h4>GPS Navigation</h4><p>Latest maps pre-loaded</p><div class="addon-price">+$8/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">👶</div><h4>Child Seat</h4><p>Age-appropriate, fitted</p><div class="addon-price">+$12/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">👨‍✈️</div><h4>Private Chauffeur</h4><p>Licensed professional driver</p><div class="addon-price">+$85/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">📱</div><h4>Wi-Fi Hotspot</h4><p>Unlimited 5G data</p><div class="addon-price">+$10/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">⛽</div><h4>Pre-paid Fuel</h4><p>Return empty, no charge</p><div class="addon-price">+$60 flat</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">🏎️</div><h4>Roadside Assist+</h4><p>24h priority recovery</p><div class="addon-price">+$15/day</div></div>
+    <div class="addon-card" onclick="this.classList.toggle('selected')"><div class="addon-check">✓</div><div class="addon-icon">🎁</div><h4>Welcome Package</h4><p>Champagne &amp; amenities</p><div class="addon-price">+$45 flat</div></div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section" style="background:var(--dark2);padding-top:90px;padding-bottom:90px">
+  <div class="text-center">
+    <div class="section-label reveal" style="justify-content:center">Pricing Plans</div>
+    <h2 class="section-title gsap-title" style="color:var(--white)">Simple, <em>Transparent</em> Pricing</h2>
+    <div class="gold-line reveal"></div>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card"><h3>Essential</h3><div class="pricing-price">$199<small>/day</small></div><p class="pricing-desc">Perfect for business travel and city exploration with a premium compact or sedan.</p><ul class="pricing-features"><li>Access to Standard Fleet</li><li>200 miles per day</li><li>Basic insurance cover</li><li>Roadside assistance</li><li class="no">Airport delivery</li><li class="no">VIP concierge</li></ul><a href="contact.html" class="btn btn-outline" style="width:100%;justify-content:center;display:flex">Get Started</a></div>
+    <div class="pricing-card featured"><h3>Premium</h3><div class="pricing-price">$399<small>/day</small></div><p class="pricing-desc">Our most popular plan — full luxury fleet access with premium extras included.</p><ul class="pricing-features"><li>Full Luxury Fleet Access</li><li>Unlimited mileage</li><li>Premium insurance (zero excess)</li><li>24/7 Roadside assistance</li><li>Airport delivery included</li><li class="no">VIP concierge</li></ul><a href="contact.html" class="btn btn-gold" style="width:100%;justify-content:center;display:flex">Choose Premium</a></div>
+    <div class="pricing-card"><h3>Prestige</h3><div class="pricing-price">$799<small>/day</small></div><p class="pricing-desc">Ultimate experience — exotic supercars, personal concierge and every extra included.</p><ul class="pricing-features"><li>Exotic &amp; Hypercar Fleet</li><li>Unlimited mileage</li><li>Full zero-excess insurance</li><li>Priority 24/7 support</li><li>Door-to-door delivery</li><li>Dedicated VIP concierge</li></ul><a href="contact.html" class="btn btn-outline" style="width:100%;justify-content:center;display:flex">Go Prestige</a></div>
+  </div>
+</section>
+
+<!-- Guarantees -->
+<section class="section">
+  <div class="text-center">
+    <div class="section-label reveal" style="justify-content:center">Our Promise</div>
+    <h2 class="section-title gsap-title">The STACKLY <em>Guarantee</em></h2>
+    <div class="gold-line reveal"></div>
+  </div>
+  <div class="guarantee-grid">
+    <div class="guarantee-card"><div class="guar-icon">✅</div><div class="guar-text"><h4>Best Price Guarantee</h4><p>Find it cheaper elsewhere — we'll match it, no questions asked. Transparent pricing, always.</p></div></div>
+    <div class="guarantee-card"><div class="guar-icon">🚗</div><div class="guar-text"><h4>Vehicle Quality Promise</h4><p>Every car is inspected, detailed and certified before every rental. If it doesn't meet standards, we replace it.</p></div></div>
+    <div class="guarantee-card"><div class="guar-icon">🕐</div><div class="guar-text"><h4>On-Time Delivery</h4><p>We guarantee delivery within your booking window. Late? We compensate with a free upgrade.</p></div></div>
+    <div class="guarantee-card"><div class="guar-icon">📞</div><div class="guar-text"><h4>24/7 Support Promise</h4><p>Real humans, not bots. Any time of day or night, a STACKLY specialist picks up within 3 rings.</p></div></div>
+    <div class="guarantee-card"><div class="guar-icon">🔄</div><div class="guar-text"><h4>Hassle-Free Returns</h4><p>No damage ambiguity. If you return the car in the same condition, there are zero additional charges — ever.</p></div></div>
+    <div class="guarantee-card"><div class="guar-icon">💳</div><div class="guar-text"><h4>Secure Payments</h4><p>PCI-DSS compliant payment processing. Your card details are always encrypted and never stored.</p></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="./index.html" class="nav-logo" id="navLogo">
+        <div class="nav-logo-icon"><img src="./WhatsApp Image 2026-06-01 at 11.49.20 PM.jpeg" alt="STACKLY Logo"></div>
+        STACKLY
+      </a>
+      <p>The world's most trusted luxury car rental service.</p>
+      <div class="footer-social">
+        <a href="./Error.html">𝕏</a><a href="./Error.html">f</a><a href="./Error.html">in</a><a href="./Error.html">▶</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="./about.html">About Us</a></li><li><a href="./cars.html">Fleet</a></li><li><a href="./services.html">Services</a></li><li><a href="./blog.html">Blog</a></li><li><a href="./contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Fleet</h4><ul><li><a href="./cars.html">Luxury Sedans</a></li><li><a href="./cars.html">Sports Cars</a></li><li><a href="./cars.html">SUVs</a></li><li><a href="./cars.html">Electric</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="#">📞 +91 9876543210</a></li><li><a href="#">📧 hello@stackly.com</a></li><li><a href="#">📍 MMR Complex, Salem, Tamil Nadu 636008</a></li><li><a href="#">⏰ 24 / 7 Support</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 <span>STACKLY</span>. All rights reserved.</p>
+    <p>
+      <a href="./Error.html" style="font-size:0.9rem;color:var(--gray);text-decoration:none;transition:color .3s,padding-left .3s;" onmouseover="this.style.color='var(--gold)';this.style.paddingLeft='6px'" onmouseout="this.style.color='var(--gray)';this.style.paddingLeft='0'">Privacy Policy</a> ·
+      <a href="./Error.html" style="font-size:0.9rem;color:var(--gray);text-decoration:none;transition:color .3s,padding-left .3s;" onmouseover="this.style.color='var(--gold)';this.style.paddingLeft='6px'" onmouseout="this.style.color='var(--gray)';this.style.paddingLeft='0'">Terms of Use</a> ·
+      <a href="./Error.html" style="font-size:0.9rem;color:var(--gray);text-decoration:none;transition:color .3s,padding-left .3s;" onmouseover="this.style.color='var(--gold)';this.style.paddingLeft='6px'" onmouseout="this.style.color='var(--gray)';this.style.paddingLeft='0'">Cookie Policy</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+window.addEventListener('load', () => {
+  gsap.to(['#ht1','#ht2'], {y:'0%', duration:0.9, stagger:0.14, ease:'cubic-bezier(0.16,1,0.3,1)', delay:0.3});
+  gsap.from('#breadcrumb', {opacity:0, y:15, duration:0.7, delay:0.5});
+  gsap.from('.hero-badge', {opacity:0, y:15, duration:0.6, delay:0.2});
+  gsap.from('#heroSub', {opacity:0, y:20, duration:0.8, delay:0.6});
+  gsap.from('#heroActions', {opacity:0, y:20, duration:0.7, delay:0.9});
+  gsap.to('#heroBgImg', {y:'16%', ease:'none', scrollTrigger:{trigger:'#pageHero', start:'top top', end:'bottom top', scrub:true}});
+});
+window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50));
+document.getElementById('navToggle').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+document.getElementById('menuClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+
+document.querySelectorAll('.gsap-title').forEach(el => {
+  const w = el.innerHTML.split(/(\s+)/);
+  el.innerHTML = w.map(x => x.trim() ? `<span style="display:inline-block;overflow:hidden"><span class="wd" style="display:inline-block">${x}</span></span>` : x).join('');
+  gsap.from(el.querySelectorAll('.wd'), {y:'110%', opacity:0, duration:0.75, stagger:0.07, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 88%'}});
+});
+
+gsap.to('.service-card', {opacity:1, y:0, duration:0.65, stagger:0.08, ease:'power2.out', scrollTrigger:{trigger:'.services-grid', start:'top 80%'}});
+gsap.to('#processSteps .process-step', {opacity:1, y:0, duration:0.6, stagger:0.12, ease:'power2.out', scrollTrigger:{trigger:'#processSteps', start:'top 78%'}});
+gsap.to('.addon-card', {opacity:1, y:0, duration:0.55, stagger:0.06, ease:'power2.out', scrollTrigger:{trigger:'.addons-grid', start:'top 80%'}});
+gsap.to('.pricing-card', {opacity:1, y:0, duration:0.65, stagger:0.12, ease:'power2.out', scrollTrigger:{trigger:'.pricing-grid', start:'top 80%'}});
+gsap.to('.guarantee-card', {opacity:1, y:0, duration:0.55, stagger:0.08, ease:'power2.out', scrollTrigger:{trigger:'.guarantee-grid', start:'top 80%'}});
+
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting){ x.target.classList.add('visible'); io.unobserve(x.target); }}), {threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
